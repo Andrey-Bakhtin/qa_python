@@ -30,8 +30,23 @@ class TestBooksCollector:
     def test_set_book_genre_genre_added(self, collection, book_name, genre):
         collection.add_new_book(book_name)
         collection.set_book_genre(book_name, genre)
-        assert collection.get_book_genre(book_name) == genre
+        assert collection.books_genre[book_name] == genre
 
+    @pytest.mark.parametrize(
+        'book_name, genre',
+        [
+            ['Сияние', 'Ужасы'],
+            ['Десять негритят', 'Детективы'],
+            ['Солярис', 'Фантастика'],
+            ['Ревизор', 'Комедии'],
+            ['Чебурашка', 'Мультфильмы']
+        ]
+    )
+    
+    def test_book_genre_returns_correct_genre(self, collection, book_name, genre):
+        collection.books_genre[book_name] = genre
+        assert collection.get_book_genre(book_name) == genre
+    
     def test_get_book_genre_wrong_genre_not_added(self, collection): 
         collection.add_new_book('Остров сокровищ')
         collection.set_book_genre('Остров сокровищ', 'Приключения')
@@ -73,5 +88,4 @@ class TestBooksCollector:
             collection.add_new_book(book)
             collection.add_book_in_favorites(book)
         collection.add_new_book('Маленький принц')
-        assert collection.get_list_of_favorites_books() == ['Сияние', 'Десять негритят', 'Солярис']
-        
+        assert collection.get_list_of_favorites_books() == ['Сияние', 'Десять негритят', 'Солярис']       
